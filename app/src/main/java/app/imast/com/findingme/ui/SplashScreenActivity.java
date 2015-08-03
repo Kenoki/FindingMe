@@ -1,5 +1,6 @@
 package app.imast.com.findingme.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -13,6 +14,27 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+
+        Thread loading = new Thread() {
+            public void run() {
+                try {
+                    sleep(5000);
+                    Intent main = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                    startActivity(main);
+                }
+
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                finally {
+                    finish();
+                }
+            }
+        };
+
+        loading.start();
+
     }
 
     @Override
