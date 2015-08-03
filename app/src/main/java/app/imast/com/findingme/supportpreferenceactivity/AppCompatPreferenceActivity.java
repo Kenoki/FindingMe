@@ -11,10 +11,14 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import static app.imast.com.findingme.util.LogUtils.makeLogTag;
+
 /**
  * Created by aoki on 03/08/2015.
  */
 public class AppCompatPreferenceActivity extends PreferenceActivity {
+
+    private static final String TAG = makeLogTag(AppCompatPreferenceActivity.class);
 
     private AppCompatDelegate mDelegate;
 

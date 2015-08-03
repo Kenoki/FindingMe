@@ -8,7 +8,11 @@ import android.view.MenuItem;
 
 import app.imast.com.findingme.R;
 
+import static app.imast.com.findingme.util.LogUtils.makeLogTag;
+
 public class SplashScreenActivity extends AppCompatActivity {
+
+    private static final String TAG = makeLogTag(SplashScreenActivity.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

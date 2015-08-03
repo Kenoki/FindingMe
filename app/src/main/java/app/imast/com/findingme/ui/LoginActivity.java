@@ -7,7 +7,11 @@ import android.view.MenuItem;
 
 import app.imast.com.findingme.R;
 
+import static app.imast.com.findingme.util.LogUtils.makeLogTag;
+
 public class LoginActivity extends AppCompatActivity {
+
+    private static final String TAG = makeLogTag(LoginActivity.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
