@@ -5,14 +5,25 @@
 
     <string name="title_activity_login">Iniciar Sesión</string>
     <string name="title_activity_splash_screen">Splash Screen</string>
+    <string name="title_activity_home">Inicio</string>
+    <string name="title_activity_sign_up">Registrarme</string>
+    <string name="title_activity_recover_password">Recuperar Contraseña</string>
 
     <string name="hint_user">Usuario</string>
     <string name="hint_pass">Contraseña</string>
+    <string name="hint_pass_confirm">Repetir Contraseña</string>
+    <string name="hint_email">Correo</string>
 
     <string name="txt_btn_sign_in">Iniciar Sesión</string>
-    <string name="txt_recover_link">¿Has olvidado tu contraseña?</string>
     <string name="txt_social">También puedes ingresar con</string>
     <string name="txt_btn_gplus">Google +</string>
     <string name="txt_btn_facebook">Facebook</string>
+    <string name="txt_btn_sign_up">Registrarme</string>
+    <string name="txt_btn_recover_send">Enviar</string>
+
+    <string name="txv_recover_link">¿Has olvidado tu contraseña?</string>
+    <string name="txv_recover_content">Finding Me te enviará las instrucciones sobre como restablecer tu contraseña a tu dirección de correo asociada a tu cuenta.</string>
+    <string name="hello_world">Hola Mundo</string>
+
 
 </resources>
