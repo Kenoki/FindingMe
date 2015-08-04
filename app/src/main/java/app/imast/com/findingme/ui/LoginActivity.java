@@ -4,13 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -18,9 +21,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import app.imast.com.findingme.R;
 import app.imast.com.findingme.model.User;
@@ -112,13 +117,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String user = edtUser.getText().toString().trim();
         String pass = edtPass.getText().toString().trim();
 
-        // Mapeo de los pares clave-valor
-        HashMap<String, String> parametros = new HashMap();
-        parametros.put("username", user);
-        parametros.put("password", pass);
+        JSONObject jsonObject = new JSONObject();
+        JSONObject jsonUser = new JSONObject();
+        try {
+
+            jsonObject.put("username", user);
+            jsonObject.put("password", pass);
+
+            jsonUser.put("user", jsonObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        /*Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+        startActivity(intent);*/
+
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, "http://192.168.1.100:1337/user", new JSONObject(parametros), new Response.Listener<JSONObject>() {
+                (Request.Method.POST, "http://findmewebapp-eberttoribioupc.c9.io/login", jsonUser, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -132,6 +149,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         if (user != null)
                         {
+                            if (!TextUtils.isEmpty(user.getStatus())){
+                                Toast.makeText(getApplicationContext(), user.getStatus(), Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+
                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                             startActivity(intent);
                         }
@@ -143,7 +165,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onErrorResponse(VolleyError error) {
                         LOGD(TAG, "Error Volley:"+ error.getMessage());
                     }
-                });
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/json");
+                params.put("Accept", "application/json");
+
+                return params;
+            }
+        };
+
+
 
         VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsObjRequest);
 
