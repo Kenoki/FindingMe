@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -17,9 +18,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import app.imast.com.findingme.R;
 import app.imast.com.findingme.model.User;
@@ -93,17 +96,25 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         String passConfirm = edtPassConfirm.getText().toString().trim();
         String email = edtEmail.getText().toString().trim();
 
-        // Mapeo de los pares clave-valor
-        HashMap<String, String> parametros = new HashMap();
-        parametros.put("username", user);
-        parametros.put("password", pass);
-        parametros.put("password_confirm", passConfirm);
-        parametros.put("email", email);
+        JSONObject jsonObject = new JSONObject();
+        JSONObject jsonUser = new JSONObject();
+
+        try {
+            jsonObject.put("username", user);
+            jsonObject.put("password", pass);
+            jsonObject.put("password_confirmation", passConfirm);
+            jsonObject.put("email", email);
+
+            jsonUser.put("user", jsonObject);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(
                         Request.Method.POST,
-                        "http://192.168.1.100:1337/user",
-                        new JSONObject(parametros),
+                        "http://findmewebapp-eberttoribioupc.c9.io/users",
+                        jsonUser,
                         new Response.Listener<JSONObject>() {
 
                             @Override
@@ -132,7 +143,16 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                             }
                         }
 
-        );
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/json");
+                params.put("Accept", "application/json");
+
+                return params;
+            }
+        };
 
         VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsObjRequest);
 

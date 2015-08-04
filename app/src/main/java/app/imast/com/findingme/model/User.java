@@ -11,6 +11,7 @@ public class User {
     private String password;
     private Date createdAt;
     private Date updatedAt;
+    private String status;
 
     public String getUsername() {
         return username;
@@ -42,5 +43,13 @@ public class User {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

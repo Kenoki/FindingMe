@@ -24,6 +24,16 @@
     <string name="txv_recover_link">¿Has olvidado tu contraseña?</string>
     <string name="txv_recover_content">Finding Me te enviará las instrucciones sobre como restablecer tu contraseña a tu dirección de correo asociada a tu cuenta.</string>
     <string name="hello_world">Hola Mundo</string>
+    <string name="home_item">Inicio</string>
+    <string name="my_pets_item">Mis Mascotas</string>
+    <string name="my_search_item">Mis Búsquedas</string>
+    <string name="my_info_item">Mi Información</string>
+    <string name="sign_out_item">Cerrar Sesión</string>
+    <string name="openDrawer">Abrir Drawer</string>
+    <string name="closeDrawer">Cerrar Drawer</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
