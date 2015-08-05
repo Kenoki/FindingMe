@@ -19,6 +19,18 @@ public class LostPetAdapter extends RecyclerView.Adapter<LostPetAdapter.LostPetV
 
     private List<Pet> items;
 
+    public List<Pet> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Pet> items) {
+        this.items = items;
+    }
+
+    public void clearData() {
+        this.items.clear();
+    }
+
     public static class LostPetViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView urlPetPhoto;

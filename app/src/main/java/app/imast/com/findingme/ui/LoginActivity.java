@@ -2,6 +2,7 @@ package app.imast.com.findingme.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -9,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +29,7 @@ import java.util.Map;
 
 import app.imast.com.findingme.R;
 import app.imast.com.findingme.model.User;
+import app.imast.com.findingme.util.ValidationUtils;
 import app.imast.com.findingme.util.VolleySingleton;
 
 import static app.imast.com.findingme.util.LogUtils.LOGD;
@@ -39,7 +40,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final String TAG = makeLogTag(LoginActivity.class);
 
     TextView txvRecoverLink;
-    EditText edtUser, edtPass;
+    TextInputLayout tilUser, tilPass;
     Button btnSignIn, btnSignUp;
 
     @Override
@@ -49,8 +50,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         txvRecoverLink = (TextView) findViewById(R.id.txvRecoverLink);
 
-        edtUser = (EditText) findViewById(R.id.edtUser);
-        edtPass = (EditText) findViewById(R.id.edtPass);
+        tilUser = (TextInputLayout) findViewById(R.id.tilUser);
+        tilPass = (TextInputLayout) findViewById(R.id.tilPass);
 
         btnSignIn = (Button) findViewById(R.id.btnSignIn);
         btnSignUp = (Button) findViewById(R.id.btnSignUp);
@@ -65,23 +66,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -114,72 +103,69 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //region MÉTODOS DE OPERACIÓN
 
     private void login() {
-        String user = edtUser.getText().toString().trim();
-        String pass = edtPass.getText().toString().trim();
 
-        JSONObject jsonObject = new JSONObject();
-        JSONObject jsonUser = new JSONObject();
-        try {
+        if (!ValidationUtils.isEmpty(tilUser, tilPass)) {
+            String user = tilUser.getEditText().getText().toString().trim();
+            String pass = tilPass.getEditText().getText().toString().trim();
 
-            jsonObject.put("username", user);
-            jsonObject.put("password", pass);
+            JSONObject jsonObject = new JSONObject();
+            JSONObject jsonUser = new JSONObject();
+            try {
 
-            jsonUser.put("user", jsonObject);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+                jsonObject.put("username", user);
+                jsonObject.put("password", pass);
 
+                jsonUser.put("user", jsonObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-        /*Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-        startActivity(intent);*/
+            JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                    (Request.Method.POST, "http://findmewebapp-eberttoribioupc.c9.io/login", jsonUser, new Response.Listener<JSONObject>() {
 
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            LOGD(TAG, "Response: " + response.toString());
 
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, "http://findmewebapp-eberttoribioupc.c9.io/login", jsonUser, new Response.Listener<JSONObject>() {
+                            //Type listType = new TypeToken<ArrayList<User>>() {}.getType();
 
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        LOGD(TAG, "Response: " + response.toString());
+                            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
 
-                        //Type listType = new TypeToken<ArrayList<User>>() {}.getType();
+                            User user = gson.fromJson(response.toString(), User.class);
 
-                        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
+                            if (user != null)
+                            {
+                                if (!TextUtils.isEmpty(user.getStatus())){
+                                    Toast.makeText(getApplicationContext(), user.getStatus(), Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
 
-                        User user = gson.fromJson(response.toString(), User.class);
-
-                        if (user != null)
-                        {
-                            if (!TextUtils.isEmpty(user.getStatus())){
-                                Toast.makeText(getApplicationContext(), user.getStatus(), Toast.LENGTH_SHORT).show();
-                                return;
+                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                startActivity(intent);
                             }
 
-                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                            startActivity(intent);
                         }
+                    }, new Response.ErrorListener() {
 
-                    }
-                }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            LOGD(TAG, "Error Volley:"+ error.getMessage());
+                        }
+                    }){
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> params = new HashMap<String, String>();
+                    params.put("Content-Type", "application/json");
+                    params.put("Accept", "application/json");
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        LOGD(TAG, "Error Volley:"+ error.getMessage());
-                    }
-                }){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> params = new HashMap<String, String>();
-                params.put("Content-Type", "application/json");
-                params.put("Accept", "application/json");
-
-                return params;
-            }
-        };
+                    return params;
+                }
+            };
 
 
 
-        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsObjRequest);
-
+            VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsObjRequest);
+        }
     }
 
     private void goToSignUp() {
