@@ -11,29 +11,33 @@ import com.android.volley.toolbox.NetworkImageView;
 
 import java.util.List;
 
-import app.imast.com.findingme.Config;
 import app.imast.com.findingme.R;
-import app.imast.com.findingme.model.LostPet;
+import app.imast.com.findingme.model.Pet;
 import app.imast.com.findingme.util.VolleySingleton;
 
 import static app.imast.com.findingme.util.LogUtils.makeLogTag;
 
 /**
- * Created by aoki on 04/08/2015.
+ * Created by aoki on 05/08/2015.
  */
-public class LostPetAdapter extends RecyclerView.Adapter<LostPetAdapter.LostPetViewHolder> {
+public class MyPetAdapter extends RecyclerView.Adapter<MyPetAdapter.MyPetViewHolder>{
 
-    private static final String TAG = makeLogTag(LostPetAdapter.class);
+    private static final String TAG = makeLogTag(MyPetAdapter.class);
 
     private Context context;
 
-    private List<LostPet> items;
+    private List<Pet> items;
 
-    public List<LostPet> getItems() {
+    public MyPetAdapter(Context context, List<Pet> items) {
+        this.context = context;
+        this.items = items;
+    }
+
+    public List<Pet> getItems() {
         return items;
     }
 
-    public void setItems(List<LostPet> items) {
+    public void setItems(List<Pet> items) {
         this.items = items;
     }
 
@@ -41,7 +45,7 @@ public class LostPetAdapter extends RecyclerView.Adapter<LostPetAdapter.LostPetV
         this.items.clear();
     }
 
-    public static class LostPetViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    public static class MyPetViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         public NetworkImageView urlPetPhoto;
         public TextView txvPetName;
@@ -49,7 +53,7 @@ public class LostPetAdapter extends RecyclerView.Adapter<LostPetAdapter.LostPetV
 
         private ClickListener clickListener;
 
-        public LostPetViewHolder(View itemView) {
+        public MyPetViewHolder(View itemView) {
             super(itemView);
             urlPetPhoto = (NetworkImageView) itemView.findViewById(R.id.petPhoto);
             txvPetName = (TextView) itemView.findViewById(R.id.petName);
@@ -93,36 +97,31 @@ public class LostPetAdapter extends RecyclerView.Adapter<LostPetAdapter.LostPetV
 
     }
 
-    public LostPetAdapter(Context context, List<LostPet> items) {
-        this.context = context;
-        this.items = items;
-    }
-
-    public LostPetAdapter.LostPetViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public MyPetAdapter.MyPetViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.recycler_lost_pet_item, viewGroup, false);
-        return new LostPetViewHolder(v);
+        return new MyPetViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(LostPetAdapter.LostPetViewHolder lostPetViewHolder, int i) {
+    public void onBindViewHolder(MyPetAdapter.MyPetViewHolder myPetViewHolder, int i) {
 
         String base_url_photo = "http://findmewebapp-eberttoribioupc.c9.io/system/pets/photos/000/000/";
-        String folder = String.format("%03d", items.get(i).getPet_id()) + "/";
+        String folder = String.format("%03d", items.get(i).getId()) + "/";
 
-        String final_url_photo = base_url_photo + folder + items.get(i).getPet().getPhoto_file_name();
+        String final_url_photo = base_url_photo + folder + items.get(i).getPhoto_file_name();
 
-        lostPetViewHolder.urlPetPhoto.setImageUrl(final_url_photo, VolleySingleton.getInstance(context).getImageLoader());
-        lostPetViewHolder.urlPetPhoto.setDefaultImageResId(R.drawable.ic_my_pets);
-        lostPetViewHolder.urlPetPhoto.setErrorImageResId(R.drawable.ic_sign_out);
-        lostPetViewHolder.txvPetName.setText(items.get(i).getPet().getName());
-        lostPetViewHolder.txvPetInfo.setText(items.get(i).getInfo());
+        myPetViewHolder.urlPetPhoto.setImageUrl(final_url_photo, VolleySingleton.getInstance(context).getImageLoader());
+        myPetViewHolder.urlPetPhoto.setDefaultImageResId(R.drawable.ic_my_pets);
+        myPetViewHolder.urlPetPhoto.setErrorImageResId(R.drawable.ic_sign_out);
+        myPetViewHolder.txvPetName.setText(items.get(i).getName());
+        myPetViewHolder.txvPetInfo.setText(items.get(i).getInformation());
 
-        lostPetViewHolder.setClickListener(new LostPetViewHolder.ClickListener() {
+        myPetViewHolder.setClickListener(new MyPetViewHolder.ClickListener() {
             @Override
             public void onClick(View v, int position, boolean isLongClick) {
                 if (!isLongClick) {
-                    Config.lostPet = items.get(position);
+                    //Config.lostPet = items.get(position);
                     //Intent intent = new Intent(context, );
                 }
             }
@@ -134,4 +133,5 @@ public class LostPetAdapter extends RecyclerView.Adapter<LostPetAdapter.LostPetV
     public int getItemCount() {
         return items.size();
     }
+
 }

@@ -3,6 +3,7 @@ package app.imast.com.findingme.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -38,8 +39,8 @@ import app.imast.com.findingme.R;
 import app.imast.com.findingme.adapters.LostPetAdapter;
 import app.imast.com.findingme.model.District;
 import app.imast.com.findingme.model.LostPet;
-import app.imast.com.findingme.model.Pet;
 import app.imast.com.findingme.model.PetType;
+import app.imast.com.findingme.util.DividerItemDecoration;
 import app.imast.com.findingme.util.VolleySingleton;
 
 import static app.imast.com.findingme.util.LogUtils.LOGD;
@@ -88,23 +89,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         btnSearchLostPets.setOnClickListener(this);
 
         List items = new ArrayList();
-        items.add(new Pet("Fido", "http://www.cdc.gov/importation/images/dog2.jpg", "My Info sssssssssssssss"));
-        items.add(new Pet("Ham Ham", "http://www.depi.vic.gov.au/__data/assets/image/0020/182261/Image_6a.jpg", "My Info sssssssssssssss"));
-        items.add(new Pet("Lucas", "http://www.depi.vic.gov.au/__data/assets/image/0020/182261/Image_6a.jpg", "My Info sssssssssssssss"));
 
         recycler.setHasFixedSize(true);
+
+        recycler.setItemAnimator(new DefaultItemAnimator());
 
         // Usar un administrador para LinearLayout
         lManager = new LinearLayoutManager(getActivity());
         recycler.setLayoutManager(lManager);
+        recycler.addItemDecoration(new DividerItemDecoration(getActivity(), null));
 
-        lostPetAdapter = new LostPetAdapter(items);
+        lostPetAdapter = new LostPetAdapter(getActivity().getApplicationContext(), items);
 
         // Crear un nuevo adaptador
         adapter = lostPetAdapter;
         recycler.setAdapter(adapter);
 
-        recycler.setOnClickListener(this);
+        searchLostPets();
 
     }
 
@@ -150,21 +151,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             case R.id.btnSearchLostPets:
                 searchLostPets();
                 break;
-            case R.id.my_recycler_view:
-
-                break;
         }
 
     }
 
     private void searchLostPets() {
 
-        showHideSearch();
+        llSearchLostPets.setVisibility(View.GONE);
 
         District district = (District) spnDistrict.getSelectedItem();
         PetType petType = (PetType) spnPetType.getSelectedItem();
 
-        String parameters = String.format("?district_id=%d&race_id=%d", district.getId(), petType.getId());
+        String parameters = String.format("?district_id=%d&pet_type_id=%d", district.getId(), petType.getId());
 
         JsonArrayRequest jsArrayRequest = new JsonArrayRequest
                 (Request.Method.GET, "http://findmewebapp-eberttoribioupc.c9.io/lost_pets" + parameters, null, new Response.Listener<JSONArray>() {
@@ -181,14 +179,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
                         if (lstLostPet.size() > 0)
                         {
-
-                            List items = new ArrayList();
-                            items.add(new Pet("1 Fido", "http://www.cdc.gov/importation/images/dog2.jpg", "My Info sssssssssssssss"));
-                            items.add(new Pet("2 Ham Ham", "http://www.depi.vic.gov.au/__data/assets/image/0020/182261/Image_6a.jpg", "My Info sssssssssssssss"));
-                            items.add(new Pet("3 Lucas", "http://www.depi.vic.gov.au/__data/assets/image/0020/182261/Image_6a.jpg", "My Info sssssssssssssss"));
-
+                            LOGD(TAG, "Cantidad de LostPets " + lstLostPet.size());
                             lostPetAdapter.clearData();
-                            lostPetAdapter.setItems(items);
+                            lostPetAdapter.setItems(lstLostPet);
                             lostPetAdapter.notifyDataSetChanged();
                         }
 
@@ -219,4 +212,5 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private void showHideSearch() {
         llSearchLostPets.setVisibility(llSearchLostPets.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
     }
+
 }
