@@ -1,5 +1,10 @@
 <resources>
 
+    <style name="mySpinnerStyle" parent="android:Widget.ListView.DropDown">
+        <item name="android:divider">@color/accent</item>
+        <item name="android:dividerHeight">1dp</item>
+    </style>
+
     <style name="Base.Theme.FM" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
@@ -7,6 +12,7 @@
         <item name="android:textColorPrimary">@color/primary_text</item>
         <item name="android:textColorSecondary">@color/secondary_text</item>
         <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:dropDownListViewStyle">@style/mySpinnerStyle</item>
     </style>
 
     <!-- Base application theme. -->
