@@ -24,6 +24,7 @@ import app.imast.com.findingme.Config;
 import app.imast.com.findingme.R;
 import app.imast.com.findingme.model.District;
 import app.imast.com.findingme.model.PetType;
+import app.imast.com.findingme.model.Race;
 import app.imast.com.findingme.util.VolleySingleton;
 
 import static app.imast.com.findingme.util.LogUtils.LOGD;
@@ -33,7 +34,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private static final String TAG = makeLogTag(SplashScreenActivity.class);
 
-    private int counterLoadedDate = 0;
+    private int counterLoadedData = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                     sleep(5000);
 
-                    if (counterLoadedDate == 2) {
+                    if (counterLoadedData == 3) {
                         Intent main = new Intent(SplashScreenActivity.this, LoginActivity.class);
                         startActivity(main);
                         finish();
@@ -84,6 +85,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         loadDistrict();
         loadPetType();
+        loadRace();
 
     }
 
@@ -104,7 +106,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                         Config.lstDistrict = gson.fromJson(response.toString(), listType);
 
-                        counterLoadedDate++;
+                        counterLoadedData++;
 
                     }
                 }, new Response.ErrorListener() {
@@ -136,7 +138,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                         Config.lstPetType = gson.fromJson(response.toString(), listType);
 
-                        counterLoadedDate++;
+                        counterLoadedData++;
 
                     }
                 }, new Response.ErrorListener() {
@@ -149,5 +151,36 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsArrayRequest);
 
+    }
+
+    private void loadRace() {
+
+        Toast.makeText(getApplicationContext(), "Cargando Razas", Toast.LENGTH_SHORT).show();
+
+        JsonArrayRequest jsArrayRequest = new JsonArrayRequest
+                (Request.Method.GET, "http://findmewebapp-eberttoribioupc.c9.io/races.json", null, new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        LOGD(TAG, "Response: " + response.toString());
+
+                        Type listType = new TypeToken<ArrayList<Race>>() {}.getType();
+
+                        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
+
+                        Config.lstRace = gson.fromJson(response.toString(), listType);
+
+                        counterLoadedData++;
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        LOGD(TAG, "Error Volley:"+ error.getMessage());
+                    }
+                });
+
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsArrayRequest);
     }
 }

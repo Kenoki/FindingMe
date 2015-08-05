@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import app.imast.com.findingme.Config;
 import app.imast.com.findingme.R;
 import app.imast.com.findingme.model.User;
 import app.imast.com.findingme.util.ValidationUtils;
@@ -120,8 +121,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                                 if (user != null)
                                 {
+
+                                    Config.user = user;
+
                                     Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
                                     startActivity(intent);
+                                    finish();
                                 }
 
                             }
