@@ -12,14 +12,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
+import app.imast.com.findingme.Config;
 import app.imast.com.findingme.R;
 import app.imast.com.findingme.ui.fragments.HomeFragment;
+import app.imast.com.findingme.ui.fragments.MyPetsFragment;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private Toolbar toolbar;
     private NavigationView navigationView;
+    private TextView txvUsername, txvEmail;
     private DrawerLayout drawerLayout;
 
     @Override
@@ -30,6 +34,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setupToolbar();
 
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        txvUsername = (TextView) findViewById(R.id.txv_header_username);
+        txvEmail = (TextView) findViewById(R.id.txv_header_email);
 
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
         navigationView.setNavigationItemSelectedListener(this);
@@ -51,6 +57,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 super.onDrawerOpened(drawerView);
             }
         };
+
+        txvUsername.setText(Config.user.getUsername());
+        txvEmail.setText(Config.user.getEmail());
 
         //Setting the actionbarToggle to drawer layout
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
@@ -109,12 +118,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 selectItem(new HomeFragment());
                 return true;
             case R.id.nav_my_pets:
-                selectItem(new HomeFragment());
+                selectItem(new MyPetsFragment());
                 return true;
             case R.id.nav_my_search:
                 selectItem(new HomeFragment());
                 return true;
             case R.id.nav_sign_out:
+                signOut();
                 return true;
             default:
                 return true;
@@ -128,6 +138,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void signOut() {
+
+        Config.user = null;
+
         Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();

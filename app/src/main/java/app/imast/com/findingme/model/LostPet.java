@@ -9,24 +9,28 @@ public class LostPet {
     private String status;
     private String info;
     private String report_date;
+    private String lost_date;
     private double latitude;
     private double longitude;
     private String found_date;
     private int pet_id;
     private int user_id;
     private int district_id;
+    private Pet pet;
 
-    public LostPet(int id, String status, String info, String report_date, double latitude, double longitude, String found_date, int pet_id, int user_id, int district_id) {
+    public LostPet(int id, String status, String info, String report_date, String lost_date, double latitude, double longitude, String found_date, int pet_id, int user_id, int district_id, Pet pet) {
         this.id = id;
         this.status = status;
         this.info = info;
         this.report_date = report_date;
+        this.lost_date = lost_date;
         this.latitude = latitude;
         this.longitude = longitude;
         this.found_date = found_date;
         this.pet_id = pet_id;
         this.user_id = user_id;
         this.district_id = district_id;
+        this.pet = pet;
     }
 
     public int getId() {
@@ -59,6 +63,14 @@ public class LostPet {
 
     public void setReport_date(String report_date) {
         this.report_date = report_date;
+    }
+
+    public String getLost_date() {
+        return lost_date;
+    }
+
+    public void setLost_date(String lost_date) {
+        this.lost_date = lost_date;
     }
 
     public double getLatitude() {
@@ -107,5 +119,13 @@ public class LostPet {
 
     public void setDistrict_id(int district_id) {
         this.district_id = district_id;
+    }
+
+    public Pet getPet() {
+        return pet;
+    }
+
+    public void setPet(Pet pet) {
+        this.pet = pet;
     }
 }
