@@ -16,8 +16,9 @@ public class Pet {
     private int user_id;
     private int race_id;
     private String photo_file_name;
+    private String photo;
 
-    public Pet(int id, String name, String sex, int age, String vaccinated, String information, String state, int pet_type_id, int user_id, int race_id, String photo_file_name) {
+    public Pet(int id, String name, String sex, int age, String vaccinated, String information, String state, int pet_type_id, int user_id, int race_id, String photo_file_name, String photo) {
         this.id = id;
         this.name = name;
         this.sex = sex;
@@ -29,6 +30,7 @@ public class Pet {
         this.user_id = user_id;
         this.race_id = race_id;
         this.photo_file_name = photo_file_name;
+        this.photo = photo;
     }
 
     public int getId() {
@@ -117,5 +119,13 @@ public class Pet {
 
     public void setPhoto_file_name(String photo_file_name) {
         this.photo_file_name = photo_file_name;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }

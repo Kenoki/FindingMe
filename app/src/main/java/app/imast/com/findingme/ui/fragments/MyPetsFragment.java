@@ -3,9 +3,11 @@ package app.imast.com.findingme.ui.fragments;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +32,6 @@ import java.util.Map;
 import app.imast.com.findingme.Config;
 import app.imast.com.findingme.R;
 import app.imast.com.findingme.adapters.MyPetAdapter;
-import app.imast.com.findingme.model.LostPet;
 import app.imast.com.findingme.model.Pet;
 import app.imast.com.findingme.util.DividerItemDecoration;
 import app.imast.com.findingme.util.VolleySingleton;
@@ -58,6 +59,9 @@ public class MyPetsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle("Mis Mascotas");
 
         fabAddPet.setOnClickListener(this);
 
@@ -104,11 +108,19 @@ public class MyPetsFragment extends Fragment implements View.OnClickListener {
 
     private void goToAddPet() {
 
+        Fragment fragment = new AddPetFragment();
+
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frame, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     private void getMyPets() {
 
         String parameters = String.format("/%d/pets", Config.user.getId());
+
+        LOGD(TAG, parameters);
 
         JsonArrayRequest jsArrayRequest = new JsonArrayRequest
                 (Request.Method.GET, "http://findmewebapp-eberttoribioupc.c9.io/users" + parameters, null, new Response.Listener<JSONArray>() {
@@ -117,7 +129,7 @@ public class MyPetsFragment extends Fragment implements View.OnClickListener {
                     public void onResponse(JSONArray response) {
                         LOGD(TAG, "Response: " + response.toString());
 
-                        Type listType = new TypeToken<ArrayList<LostPet>>() {}.getType();
+                        Type listType = new TypeToken<ArrayList<Pet>>() {}.getType();
 
                         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
 

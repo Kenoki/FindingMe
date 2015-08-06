@@ -15,6 +15,7 @@ import app.imast.com.findingme.R;
 import app.imast.com.findingme.model.Pet;
 import app.imast.com.findingme.util.VolleySingleton;
 
+import static app.imast.com.findingme.util.LogUtils.LOGD;
 import static app.imast.com.findingme.util.LogUtils.makeLogTag;
 
 /**
@@ -99,21 +100,22 @@ public class MyPetAdapter extends RecyclerView.Adapter<MyPetAdapter.MyPetViewHol
 
     public MyPetAdapter.MyPetViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.recycler_lost_pet_item, viewGroup, false);
+                .inflate(R.layout.recycler_my_pet_item, viewGroup, false);
         return new MyPetViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(MyPetAdapter.MyPetViewHolder myPetViewHolder, int i) {
 
-        String base_url_photo = "http://findmewebapp-eberttoribioupc.c9.io/system/pets/photos/000/000/";
-        String folder = String.format("%03d", items.get(i).getId()) + "/";
+        String base_url_photo = "http://findmewebapp-eberttoribioupc.c9.io";
 
-        String final_url_photo = base_url_photo + folder + items.get(i).getPhoto_file_name();
+        String final_url_photo = base_url_photo + items.get(i).getPhoto();
+
+        LOGD(TAG, final_url_photo);
 
         myPetViewHolder.urlPetPhoto.setImageUrl(final_url_photo, VolleySingleton.getInstance(context).getImageLoader());
         myPetViewHolder.urlPetPhoto.setDefaultImageResId(R.drawable.ic_my_pets);
-        myPetViewHolder.urlPetPhoto.setErrorImageResId(R.drawable.ic_sign_out);
+        //myPetViewHolder.urlPetPhoto.setErrorImageResId(R.drawable.ic_sign_out);
         myPetViewHolder.txvPetName.setText(items.get(i).getName());
         myPetViewHolder.txvPetInfo.setText(items.get(i).getInformation());
 

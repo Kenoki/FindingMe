@@ -114,7 +114,7 @@ public class LostPetAdapter extends RecyclerView.Adapter<LostPetAdapter.LostPetV
 
         lostPetViewHolder.urlPetPhoto.setImageUrl(final_url_photo, VolleySingleton.getInstance(context).getImageLoader());
         lostPetViewHolder.urlPetPhoto.setDefaultImageResId(R.drawable.ic_my_pets);
-        lostPetViewHolder.urlPetPhoto.setErrorImageResId(R.drawable.ic_sign_out);
+        //lostPetViewHolder.urlPetPhoto.setErrorImageResId(R.drawable.ic_sign_out);
         lostPetViewHolder.txvPetName.setText(items.get(i).getPet().getName());
         lostPetViewHolder.txvPetInfo.setText(items.get(i).getInfo());
 
