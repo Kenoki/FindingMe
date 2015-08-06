@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +29,7 @@ import java.util.Map;
 
 import app.imast.com.findingme.Config;
 import app.imast.com.findingme.R;
+import app.imast.com.findingme.model.ErrorUser;
 import app.imast.com.findingme.model.User;
 import app.imast.com.findingme.util.ValidationUtils;
 import app.imast.com.findingme.util.VolleySingleton;
@@ -85,14 +87,23 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         if(!ValidationUtils.isEmpty(tilUser, tilPass, tilPassConfirm, tilEmail)) {
 
+            String pass = tilPass.getEditText().getText().toString().trim();
+            String passConfirm = tilPassConfirm.getEditText().getText().toString().trim();
+
+            if (!pass.equals(passConfirm)) {
+                tilPass.setError("Contraseña no coinciden");
+                tilPassConfirm.setError("Contraseña no coinciden");
+                tilPass.setErrorEnabled(true);
+                tilPassConfirm.setErrorEnabled(true);
+                return;
+            }
+
             final ProgressDialog progress = new ProgressDialog(this);
             progress.setTitle("Finding Me");
             progress.setMessage("Registrando Usuario...");
             progress.show();
 
             String user = tilUser.getEditText().getText().toString().trim();
-            String pass = tilPass.getEditText().getText().toString().trim();
-            String passConfirm = tilPassConfirm.getEditText().getText().toString().trim();
             String email = tilEmail.getEditText().getText().toString().trim();
 
             JSONObject jsonObject = new JSONObject();
@@ -122,18 +133,39 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                                 //Type listType = new TypeToken<ArrayList<User>>() {}.getType();
 
-                                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
+                                try {
 
-                                User user = gson.fromJson(response.toString(), User.class);
+                                    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
 
-                                if (user != null)
-                                {
+                                    User user = gson.fromJson(response.toString(), User.class);
 
-                                    Config.user = user;
+                                    if (user != null)
+                                    {
+
+                                        Config.user = user;
+                                        progress.dismiss();
+                                        Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+
+                                } catch (Exception ex) {
+
+                                    ErrorUser errorUser = new Gson().fromJson(response.toString(), ErrorUser.class);
+
+                                    if (!TextUtils.isEmpty(errorUser.getUsername()[0])) {
+                                        tilUser.setError("Usuario ya ha sido registrado");
+                                        tilUser.setErrorEnabled(true);
+                                    }
+
+                                    if (!TextUtils.isEmpty(errorUser.getEmail()[0])){
+                                        tilEmail.setError("Email ya ha sido registrado");
+                                        tilEmail.setErrorEnabled(true);
+                                    }
+
+                                    LOGD(TAG, "Error: " + ex.getMessage());
+                                } finally {
                                     progress.dismiss();
-                                    Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
-                                    startActivity(intent);
-                                    finish();
                                 }
 
                             }

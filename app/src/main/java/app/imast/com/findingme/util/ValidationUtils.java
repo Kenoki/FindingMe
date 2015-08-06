@@ -31,4 +31,10 @@ public class ValidationUtils {
 
     }
 
+    public static void cleanError(TextInputLayout... collTil) {
+        for (TextInputLayout til : collTil) {
+            til.setErrorEnabled(false);
+        }
+    }
+
 }
