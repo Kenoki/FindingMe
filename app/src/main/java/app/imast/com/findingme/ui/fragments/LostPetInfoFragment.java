@@ -1,7 +1,9 @@
 package app.imast.com.findingme.ui.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -9,17 +11,39 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import app.imast.com.findingme.Config;
 import app.imast.com.findingme.R;
+import app.imast.com.findingme.model.LostPet;
 import app.imast.com.findingme.model.PetType;
 import app.imast.com.findingme.model.Race;
 import app.imast.com.findingme.ui.MapsActivity;
+import app.imast.com.findingme.util.VolleySingleton;
+
+import static app.imast.com.findingme.util.LogUtils.LOGD;
+import static app.imast.com.findingme.util.LogUtils.makeLogTag;
 
 public class LostPetInfoFragment extends Fragment implements View.OnClickListener {
 
+    private static final String TAG = makeLogTag(LostPetInfoFragment.class);
+
     private TextView txvPetName, txvPetSex, txvPetType, txvPetRace, txvPetAge, txvPetVaccinated, txvPetLostInfo, txvPetInfo;
     private ImageButton btnLastLocation;
+    private FloatingActionButton fabAddSearch;
 
     public LostPetInfoFragment() {
         // Required empty public constructor
@@ -37,6 +61,7 @@ public class LostPetInfoFragment extends Fragment implements View.OnClickListene
         Toolbar toolBar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolBar.setTitle(Config.lostPet.getPet().getName());
 
+        fabAddSearch.setOnClickListener(this);
         btnLastLocation.setOnClickListener(this);
 
         String petType = "";
@@ -83,7 +108,7 @@ public class LostPetInfoFragment extends Fragment implements View.OnClickListene
         txvPetLostInfo = (TextView) view.findViewById(R.id.txvPetLostInfo);
         txvPetInfo = (TextView) view.findViewById(R.id.txvPetInfo);
         btnLastLocation = (ImageButton) view.findViewById(R.id.btnlastLocation);
-
+        fabAddSearch = (FloatingActionButton) view.findViewById(R.id.fabAddSearch);
         return view;
     }
 
@@ -91,10 +116,65 @@ public class LostPetInfoFragment extends Fragment implements View.OnClickListene
     public void onClick(View v) {
 
         switch(v.getId()) {
+            case R.id.fabAddSearch:
+                addToMySearch();
+                break;
             case  R.id.btnlastLocation:
                 goToMapLastLocation();
                 break;
         }
+
+    }
+
+    private void addToMySearch() {
+
+        final ProgressDialog progress = new ProgressDialog(getActivity());
+        progress.setTitle("Finding Me");
+        progress.setMessage("Agregando a Mis Búsquedas...");
+        progress.show();
+
+        String parameters = String.format("%d?user_id=%d", Config.lostPet.getId(), Config.user.getId());
+
+        JsonObjectRequest jsArrayRequest = new JsonObjectRequest
+                (Request.Method.GET, "http://findmewebapp-eberttoribioupc.c9.io/lost_pets/" + parameters, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        LOGD(TAG, "Response: " + response.toString());
+
+                        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
+
+                        LostPet lostPet = gson.fromJson(response.toString(), LostPet.class);
+
+                        if (lostPet != null)
+                        {
+                            Toast.makeText(getActivity(), "Se agregó a Mis Búsquedas...", Toast.LENGTH_SHORT).show();
+                            progress.dismiss();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progress.dismiss();
+                        LOGD(TAG, "Error Volley:" + error.getMessage());
+                        Toast.makeText(getActivity().getApplicationContext(), "Error de Conexión con el Servidor", Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/json");
+                params.put("Accept", "application/json");
+
+                return params;
+            }
+        };
+
+
+
+        VolleySingleton.getInstance(getActivity().getApplicationContext()).addToRequestQueue(jsArrayRequest);
 
     }
 
