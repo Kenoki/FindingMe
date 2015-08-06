@@ -1,5 +1,6 @@
 package app.imast.com.findingme.ui;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -106,6 +107,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void login() {
 
         if (!ValidationUtils.isEmpty(tilUser, tilPass)) {
+
+            final ProgressDialog progress = new ProgressDialog(this);
+            progress.setTitle("Finding Me");
+            progress.setMessage("Espere mientras se verifica credenciales...");
+            progress.show();
+
+
             String user = tilUser.getEditText().getText().toString().trim();
             String pass = tilPass.getEditText().getText().toString().trim();
 
@@ -137,12 +145,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             if (user != null)
                             {
                                 if (!TextUtils.isEmpty(user.getStatus())){
+                                    progress.dismiss();
                                     Toast.makeText(getApplicationContext(), user.getStatus(), Toast.LENGTH_SHORT).show();
                                     return;
                                 }
 
                                 Config.user = user;
-
+                                progress.dismiss();
                                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -153,7 +162,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            LOGD(TAG, "Error Volley:"+ error.getMessage());
+                            progress.dismiss();
+                            LOGD(TAG, "Error Volley:" + error.getMessage());
                         }
                     }){
                 @Override

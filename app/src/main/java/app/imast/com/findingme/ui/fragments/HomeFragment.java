@@ -1,11 +1,13 @@
 package app.imast.com.findingme.ui.fragments;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -77,6 +79,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle("Inicio");
+
         ArrayAdapter<District> distritoAdapter = new ArrayAdapter<District>(getActivity(), android.R.layout.simple_spinner_item, Config.lstDistrict);
         distritoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnDistrict.setAdapter(distritoAdapter);
@@ -99,7 +104,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         recycler.setLayoutManager(lManager);
         recycler.addItemDecoration(new DividerItemDecoration(getActivity(), null));
 
-        lostPetAdapter = new LostPetAdapter(getActivity().getApplicationContext(), items);
+        lostPetAdapter = new LostPetAdapter(getActivity().getApplicationContext(), getActivity(), items);
 
         // Crear un nuevo adaptador
         adapter = lostPetAdapter;
@@ -157,6 +162,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private void searchLostPets() {
 
+        final ProgressDialog progress = new ProgressDialog(getActivity());
+        progress.setTitle("Finding Me");
+        progress.setMessage("Obteniendo Mascotas perdidas...");
+        progress.show();
+
         llSearchLostPets.setVisibility(View.GONE);
 
         District district = (District) spnDistrict.getSelectedItem();
@@ -183,6 +193,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             lostPetAdapter.clearData();
                             lostPetAdapter.setItems(lstLostPet);
                             lostPetAdapter.notifyDataSetChanged();
+                            progress.dismiss();
                         }
 
                     }
@@ -190,7 +201,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        LOGD(TAG, "Error Volley:"+ error.getMessage());
+                        progress.dismiss();
+                        LOGD(TAG, "Error Volley:" + error.getMessage());
                     }
                 }){
             @Override

@@ -1,6 +1,7 @@
 package app.imast.com.findingme.ui.fragments;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -133,6 +135,11 @@ public class AddPetFragment extends Fragment implements View.OnClickListener {
 
         if (!ValidationUtils.isEmpty(tilPetName, tilPetAge)) {
 
+            final ProgressDialog progress = new ProgressDialog(getActivity());
+            progress.setTitle("Finding Me");
+            progress.setMessage("Grabando Mascota...");
+            progress.show();
+
             int sexSelectedId = rbgPetSex.getCheckedRadioButtonId();
             int vaccionatedSelectedId = rbgPetVaccionated.getCheckedRadioButtonId();
 
@@ -183,7 +190,8 @@ public class AddPetFragment extends Fragment implements View.OnClickListener {
 
                             if (pet != null)
                             {
-
+                                progress.dismiss();
+                                Toast.makeText(getActivity().getApplicationContext(), "Se Grabó Mascota", Toast.LENGTH_SHORT).show();
                             }
 
                         }
@@ -191,6 +199,7 @@ public class AddPetFragment extends Fragment implements View.OnClickListener {
 
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            progress.dismiss();
                             LOGD(TAG, "Error Volley:"+ error.getMessage());
                         }
                     }){

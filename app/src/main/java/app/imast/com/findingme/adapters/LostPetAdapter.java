@@ -1,6 +1,9 @@
 package app.imast.com.findingme.adapters;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +17,7 @@ import java.util.List;
 import app.imast.com.findingme.Config;
 import app.imast.com.findingme.R;
 import app.imast.com.findingme.model.LostPet;
+import app.imast.com.findingme.ui.fragments.LostPetInfoFragment;
 import app.imast.com.findingme.util.VolleySingleton;
 
 import static app.imast.com.findingme.util.LogUtils.makeLogTag;
@@ -24,6 +28,8 @@ import static app.imast.com.findingme.util.LogUtils.makeLogTag;
 public class LostPetAdapter extends RecyclerView.Adapter<LostPetAdapter.LostPetViewHolder> {
 
     private static final String TAG = makeLogTag(LostPetAdapter.class);
+
+    private FragmentActivity fragmentActivity;
 
     private Context context;
 
@@ -93,8 +99,9 @@ public class LostPetAdapter extends RecyclerView.Adapter<LostPetAdapter.LostPetV
 
     }
 
-    public LostPetAdapter(Context context, List<LostPet> items) {
+    public LostPetAdapter(Context context, FragmentActivity fragmentActivity, List<LostPet> items) {
         this.context = context;
+        this.fragmentActivity = fragmentActivity;
         this.items = items;
     }
 
@@ -123,7 +130,13 @@ public class LostPetAdapter extends RecyclerView.Adapter<LostPetAdapter.LostPetV
             public void onClick(View v, int position, boolean isLongClick) {
                 if (!isLongClick) {
                     Config.lostPet = items.get(position);
-                    //Intent intent = new Intent(context, );
+
+                    Fragment fragment = new LostPetInfoFragment();
+                    FragmentTransaction fragmentTransaction = fragmentActivity.getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.frame, fragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+
                 }
             }
         });

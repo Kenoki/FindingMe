@@ -1,8 +1,121 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginTop="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
     tools:context="app.imast.com.findingme.ui.fragments.LostPetInfoFragment">
 
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_my_pets"
+        android:layout_gravity="center_horizontal" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:stretchColumns="1"
+            android:layout_gravity="center_horizontal">
+            <TableRow>
+                <TextView
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:text="Nombre de Mascota" />
+                <TextView
+                    android:padding="5dp"
+                    android:id="@+id/txvPetName"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:text="Sexo"/>
+                <TextView
+                    android:padding="5dp"
+                    android:id="@+id/txvPetSex"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:text="Tipo"/>
+                <TextView
+                    android:padding="5dp"
+                    android:id="@+id/txvPetType"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:text="Raza"/>
+                <TextView
+                    android:padding="5dp"
+                    android:id="@+id/txvPetRace"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:text="Edad"/>
+                <TextView
+                    android:padding="5dp"
+                    android:id="@+id/txvPetAge"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:text="Vacunado"/>
+                <TextView
+                    android:padding="5dp"
+                    android:id="@+id/txvPetVaccinated"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:text="Mi Información"/>
+                <TextView
+                    android:padding="5dp"
+                    android:id="@+id/txvPetInfo"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:text="Información de perdida"/>
+                <TextView
+                    android:padding="5dp"
+                    android:id="@+id/txvPetLostInfo"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:text="última Ubicación"/>
+                <ImageButton
+                    android:padding="5dp"
+                    android:src="@drawable/ic_action_gps" />
+            </TableRow>
+            <TableRow android:padding="16dp">
+                <Button
+                    android:layout_span="2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Empezar Búsqueda"
+                    android:layout_gravity="center_horizontal" />
+            </TableRow>
+        </TableLayout>
 
 
-</FrameLayout>
+
+    </ScrollView>
+
+</LinearLayout>

@@ -1,5 +1,6 @@
 package app.imast.com.findingme.ui;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -83,6 +84,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         if(!ValidationUtils.isEmpty(tilUser, tilPass, tilPassConfirm, tilEmail)) {
 
+            final ProgressDialog progress = new ProgressDialog(this);
+            progress.setTitle("Finding Me");
+            progress.setMessage("Registrando Usuario...");
+            progress.show();
+
             String user = tilUser.getEditText().getText().toString().trim();
             String pass = tilPass.getEditText().getText().toString().trim();
             String passConfirm = tilPassConfirm.getEditText().getText().toString().trim();
@@ -123,7 +129,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                 {
 
                                     Config.user = user;
-
+                                    progress.dismiss();
                                     Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
                                     startActivity(intent);
                                     finish();
@@ -135,6 +141,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                             @Override
                             public void onErrorResponse(VolleyError error) {
+                                progress.dismiss();
                                 LOGD(TAG, "Error Volley:"+ error.getMessage());
                             }
                         }

@@ -1,5 +1,6 @@
 package app.imast.com.findingme.ui.fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -118,6 +119,11 @@ public class MyPetsFragment extends Fragment implements View.OnClickListener {
 
     private void getMyPets() {
 
+        final ProgressDialog progress = new ProgressDialog(getActivity());
+        progress.setTitle("Finding Me");
+        progress.setMessage("Obteniendo Mis Mascotas...");
+        progress.show();
+
         String parameters = String.format("/%d/pets", Config.user.getId());
 
         LOGD(TAG, parameters);
@@ -141,6 +147,7 @@ public class MyPetsFragment extends Fragment implements View.OnClickListener {
                             myPetAdapter.clearData();
                             myPetAdapter.setItems(lstMyPet);
                             myPetAdapter.notifyDataSetChanged();
+                            progress.dismiss();
                         }
 
                     }
@@ -148,6 +155,7 @@ public class MyPetsFragment extends Fragment implements View.OnClickListener {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        progress.dismiss();
                         LOGD(TAG, "Error Volley:"+ error.getMessage());
                     }
                 }){
