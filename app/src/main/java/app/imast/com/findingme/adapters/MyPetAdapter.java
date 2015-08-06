@@ -1,18 +1,24 @@
 package app.imast.com.findingme.adapters;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
 
 import java.util.List;
 
+import app.imast.com.findingme.Config;
 import app.imast.com.findingme.R;
 import app.imast.com.findingme.model.Pet;
+import app.imast.com.findingme.ui.fragments.ReportPetFragment;
 import app.imast.com.findingme.util.VolleySingleton;
 
 import static app.imast.com.findingme.util.LogUtils.LOGD;
@@ -26,11 +32,12 @@ public class MyPetAdapter extends RecyclerView.Adapter<MyPetAdapter.MyPetViewHol
     private static final String TAG = makeLogTag(MyPetAdapter.class);
 
     private Context context;
-
+    private FragmentActivity fragmentActivity;
     private List<Pet> items;
 
-    public MyPetAdapter(Context context, List<Pet> items) {
+    public MyPetAdapter(Context context, FragmentActivity fragmentActivity, List<Pet> items) {
         this.context = context;
+        this.fragmentActivity = fragmentActivity;
         this.items = items;
     }
 
@@ -51,6 +58,7 @@ public class MyPetAdapter extends RecyclerView.Adapter<MyPetAdapter.MyPetViewHol
         public NetworkImageView urlPetPhoto;
         public TextView txvPetName;
         public TextView txvPetInfo;
+        public Button btnReportar, btnDetalle;
 
         private ClickListener clickListener;
 
@@ -59,8 +67,12 @@ public class MyPetAdapter extends RecyclerView.Adapter<MyPetAdapter.MyPetViewHol
             urlPetPhoto = (NetworkImageView) itemView.findViewById(R.id.petPhoto);
             txvPetName = (TextView) itemView.findViewById(R.id.petName);
             txvPetInfo = (TextView) itemView.findViewById(R.id.petInfo);
-            itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
+            btnReportar = (Button) itemView.findViewById(R.id.btnReportar);
+            //btnDetalle = (Button) itemView.findViewById(R.id.btnDetalle);
+
+            btnReportar.setOnClickListener(this);
+            //btnDetalle.setOnClickListener(this);
+
         }
 
         public interface ClickListener {
@@ -123,11 +135,29 @@ public class MyPetAdapter extends RecyclerView.Adapter<MyPetAdapter.MyPetViewHol
             @Override
             public void onClick(View v, int position, boolean isLongClick) {
                 if (!isLongClick) {
-                    //Config.lostPet = items.get(position);
-                    //Intent intent = new Intent(context, );
+
+                    LOGD(TAG, v.getId() + "");
+
+                    switch(v.getId()) {
+                        case R.id.btnReportar:
+                            Config.pet = items.get(position);
+                            Fragment fragment = new ReportPetFragment();
+                            FragmentTransaction fragmentTransaction = fragmentActivity.getSupportFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.frame, fragment);
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
+                            break;
+                        /*case R.id.btnDetalle:
+                            Toast.makeText(context, "Detalle", Toast.LENGTH_SHORT).show();
+                            Config.pet = items.get(position);
+                            break;*/
+                    }
+
                 }
             }
         });
+
+
 
     }
 

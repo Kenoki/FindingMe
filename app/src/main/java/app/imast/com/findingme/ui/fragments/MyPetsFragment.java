@@ -75,7 +75,7 @@ public class MyPetsFragment extends Fragment implements View.OnClickListener {
         recycler.setLayoutManager(lManager);
         recycler.addItemDecoration(new DividerItemDecoration(getActivity(), null));
 
-        myPetAdapter = new MyPetAdapter(getActivity().getApplicationContext(), items);
+        myPetAdapter = new MyPetAdapter(getActivity().getApplicationContext(), getActivity(), items);
 
         adapter = myPetAdapter;
         recycler.setAdapter(adapter);

@@ -167,7 +167,7 @@ public class AddPetFragment extends Fragment implements View.OnClickListener {
                 jsonObject.put("state", "1");
                 jsonObject.put("pet_type_id", petTypeId);
                 jsonObject.put("user_id", Config.user.getId());
-                jsonObject.put("photo", "missing.png");
+                //jsonObject.put("photo", "missing.png");
 
                 jsonPet.put("pet", jsonObject);
             } catch (JSONException e) {
