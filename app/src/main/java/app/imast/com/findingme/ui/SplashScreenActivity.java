@@ -49,11 +49,13 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                     sleep(5000);
 
-                    if (counterLoadedData == 3) {
-                        Intent main = new Intent(SplashScreenActivity.this, LoginActivity.class);
-                        startActivity(main);
-                        finish();
-                    }
+                    Intent main = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                    startActivity(main);
+                    finish();
+
+                    /*if (counterLoadedData == 3) {
+
+                    }*/
 
                 }
 
@@ -114,6 +116,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         LOGD(TAG, "Error Volley:"+ error.getMessage());
+                        Toast.makeText(getApplicationContext(), "Error de Conexión con el Servidor", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -146,6 +149,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         LOGD(TAG, "Error Volley:"+ error.getMessage());
+                        Toast.makeText(getApplicationContext(), "Error de Conexión con el Servidor", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -178,6 +182,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         LOGD(TAG, "Error Volley:"+ error.getMessage());
+                        Toast.makeText(getApplicationContext(), "Error de Conexión con el Servidor", Toast.LENGTH_SHORT).show();
                     }
                 });
 

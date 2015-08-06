@@ -163,6 +163,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             progress.dismiss();
+                            Toast.makeText(getApplicationContext(), "Error de Conexión con el Servidor", Toast.LENGTH_SHORT).show();
                             LOGD(TAG, "Error Volley:" + error.getMessage());
                         }
                     }){

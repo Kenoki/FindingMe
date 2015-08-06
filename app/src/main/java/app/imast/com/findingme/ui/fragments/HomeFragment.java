@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -203,6 +204,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     public void onErrorResponse(VolleyError error) {
                         progress.dismiss();
                         LOGD(TAG, "Error Volley:" + error.getMessage());
+                        Toast.makeText(getActivity().getApplicationContext(), "Error de Conexión con el Servidor", Toast.LENGTH_SHORT).show();
                     }
                 }){
             @Override

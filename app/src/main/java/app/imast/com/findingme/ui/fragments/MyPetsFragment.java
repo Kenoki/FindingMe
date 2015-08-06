@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -156,7 +157,8 @@ public class MyPetsFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progress.dismiss();
-                        LOGD(TAG, "Error Volley:"+ error.getMessage());
+                        LOGD(TAG, "Error Volley:" + error.getMessage());
+                        Toast.makeText(getActivity().getApplicationContext(), "Error de Conexión con el Servidor", Toast.LENGTH_SHORT).show();
                     }
                 }){
             @Override

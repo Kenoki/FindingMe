@@ -1,21 +1,25 @@
 package app.imast.com.findingme.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import app.imast.com.findingme.Config;
 import app.imast.com.findingme.R;
 import app.imast.com.findingme.model.PetType;
 import app.imast.com.findingme.model.Race;
+import app.imast.com.findingme.ui.MapsActivity;
 
-public class LostPetInfoFragment extends Fragment {
+public class LostPetInfoFragment extends Fragment implements View.OnClickListener {
 
     private TextView txvPetName, txvPetSex, txvPetType, txvPetRace, txvPetAge, txvPetVaccinated, txvPetLostInfo, txvPetInfo;
+    private ImageButton btnLastLocation;
 
     public LostPetInfoFragment() {
         // Required empty public constructor
@@ -32,6 +36,8 @@ public class LostPetInfoFragment extends Fragment {
 
         Toolbar toolBar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolBar.setTitle(Config.lostPet.getPet().getName());
+
+        btnLastLocation.setOnClickListener(this);
 
         String petType = "";
         String petRace = "";
@@ -59,6 +65,7 @@ public class LostPetInfoFragment extends Fragment {
         txvPetInfo.setText(Config.lostPet.getPet().getInformation());
         txvPetLostInfo.setText(Config.lostPet.getInfo());
 
+
     }
 
     @Override
@@ -75,8 +82,27 @@ public class LostPetInfoFragment extends Fragment {
         txvPetVaccinated = (TextView) view.findViewById(R.id.txvPetVaccinated);
         txvPetLostInfo = (TextView) view.findViewById(R.id.txvPetLostInfo);
         txvPetInfo = (TextView) view.findViewById(R.id.txvPetInfo);
+        btnLastLocation = (ImageButton) view.findViewById(R.id.btnlastLocation);
 
         return view;
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch(v.getId()) {
+            case  R.id.btnlastLocation:
+                goToMapLastLocation();
+                break;
+        }
+
+    }
+
+    private void goToMapLastLocation() {
+
+        Intent intent = new Intent(getActivity(), MapsActivity.class);
+        startActivity(intent);
+
     }
 
 }

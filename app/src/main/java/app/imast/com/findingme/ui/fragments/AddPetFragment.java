@@ -200,6 +200,7 @@ public class AddPetFragment extends Fragment implements View.OnClickListener {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             progress.dismiss();
+                            Toast.makeText(getActivity().getApplicationContext(), "Error de Conexión con el Servidor", Toast.LENGTH_SHORT).show();
                             LOGD(TAG, "Error Volley:"+ error.getMessage());
                         }
                     }){
