@@ -40,6 +40,7 @@
     <string name="hint_pet_name">Nombre Mascota</string>
     <string name="hint_pet_edad">Edad</string>
     <string name="hint_pet_information">Información</string>
+    <string name="title_activity_maps">Última Ubicación</string>
 
 
 </resources>
