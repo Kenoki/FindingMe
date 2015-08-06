@@ -37,6 +37,9 @@
     <string name="txt_action_search">Buscar</string>
     <string name="promptDistrito">Distritos</string>
     <string name="promptTipoMascota">Tipo Mascota</string>
+    <string name="hint_pet_name">Nombre Mascota</string>
+    <string name="hint_pet_edad">Edad</string>
+    <string name="hint_pet_information">Información</string>
 
 
 </resources>
