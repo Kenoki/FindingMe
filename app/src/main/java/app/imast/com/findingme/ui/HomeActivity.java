@@ -17,6 +17,7 @@ import android.widget.TextView;
 import app.imast.com.findingme.Config;
 import app.imast.com.findingme.R;
 import app.imast.com.findingme.ui.fragments.HomeFragment;
+import app.imast.com.findingme.ui.fragments.MyInfoFragment;
 import app.imast.com.findingme.ui.fragments.MyPetsFragment;
 import app.imast.com.findingme.ui.fragments.MySearchFragment;
 
@@ -119,7 +120,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 selectItem(new HomeFragment());
                 return true;
             case R.id.nav_my_info:
-                selectItem(new HomeFragment());
+                selectItem(new MyInfoFragment());
                 return true;
             case R.id.nav_my_pets:
                 selectItem(new MyPetsFragment());
