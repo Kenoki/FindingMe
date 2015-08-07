@@ -2,7 +2,10 @@ package app.imast.com.findingme.ui.fragments;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -10,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -21,7 +25,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.NetworkImageView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -49,7 +52,9 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = makeLogTag(MyInfoFragment.class);
 
-    private NetworkImageView imgOwnerPhoto;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
+    private ImageView imgOwnerPhoto;
     TextView txvEmail;
     private TextInputLayout tilFullname, tilSurname, tilAddress;
     private RadioGroup rbgSex;
@@ -64,9 +69,7 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        imgOwnerPhoto.setDefaultImageResId(R.drawable.ic_action_contact);
-        imgOwnerPhoto.setImageUrl(null, VolleySingleton.getInstance(getActivity().getApplicationContext()).getImageLoader());
-
+        imgOwnerPhoto.setOnClickListener(this);
         fabSaveMyInfo.setOnClickListener(this);
 
         ArrayAdapter<District> districtAdapter = new ArrayAdapter<District>(getActivity(), android.R.layout.simple_spinner_item, Config.lstDistrict);
@@ -83,7 +86,7 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_info, container, false);
         spnDistrict = (Spinner) view.findViewById(R.id.spnDistrict);
-        imgOwnerPhoto = (NetworkImageView) view.findViewById(R.id.ownerPhoto);
+        imgOwnerPhoto = (ImageView) view.findViewById(R.id.ownerPhoto);
         txvEmail = (TextView) view.findViewById(R.id.txvEmail);
         tilFullname = (TextInputLayout) view.findViewById(R.id.tilFullname);
         tilSurname = (TextInputLayout) view.findViewById(R.id.tilSurname);
@@ -100,6 +103,31 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener {
             case R.id.fabSaveMyInfo:
                 updateProfile();
                 break;
+            case R.id.ownerPhoto:
+                getPhoto();
+                break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_IMAGE_CAPTURE) {
+
+            if (data != null) {
+                Bundle extras = data.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                imgOwnerPhoto.setImageBitmap(imageBitmap);
+            }
+        }
+
+    }
+
+    private void getPhoto() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
 

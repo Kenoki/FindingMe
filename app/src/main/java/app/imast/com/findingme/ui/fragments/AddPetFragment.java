@@ -14,7 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -54,7 +54,7 @@ public class AddPetFragment extends Fragment implements View.OnClickListener {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
-    private ImageButton imgPetPhoto;
+    private ImageView imgPetPhoto;
     private TextInputLayout tilPetName, tilPetAge, tilPetInformation;
     private RadioGroup rbgPetSex, rbgPetVaccionated;
     private RadioButton rbtnPetSex, rbtnPetVaccionated;
@@ -76,11 +76,9 @@ public class AddPetFragment extends Fragment implements View.OnClickListener {
         imgPetPhoto.setOnClickListener(this);
 
         ArrayAdapter<PetType> petTypeAdapter = new ArrayAdapter<PetType>(getActivity(), android.R.layout.simple_spinner_item, Config.lstPetType);
-        petTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnPetType.setAdapter(petTypeAdapter);
 
         ArrayAdapter<Race> raceAdapter = new ArrayAdapter<Race>(getActivity(), android.R.layout.simple_spinner_item, Config.lstRace);
-        raceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnPetRace.setAdapter(raceAdapter);
 
     }
@@ -90,7 +88,7 @@ public class AddPetFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_pet, container, false);
-        imgPetPhoto = (ImageButton) view.findViewById(R.id.imgPetPhoto);
+        imgPetPhoto = (ImageView) view.findViewById(R.id.imgPetPhoto);
         tilPetName = (TextInputLayout) view.findViewById(R.id.tilPetName);
         tilPetAge = (TextInputLayout) view.findViewById(R.id.tilPetAge);
         tilPetInformation = (TextInputLayout) view.findViewById(R.id.tilPetInformation);
@@ -106,7 +104,7 @@ public class AddPetFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.imgPetPhoto:
-                //getPhoto();
+                getPhoto();
                 break;
             case R.id.fabSavePet:
                 savePet();
@@ -115,13 +113,18 @@ public class AddPetFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void startActivityForResult(Intent intent, int requestCode) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
-            Bundle extras = intent.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            imgPetPhoto.setImageBitmap(imageBitmap);
+
+            if (data != null) {
+                Bundle extras = data.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                imgPetPhoto.setImageBitmap(imageBitmap);
+            }
         }
+
     }
 
     private void getPhoto() {
