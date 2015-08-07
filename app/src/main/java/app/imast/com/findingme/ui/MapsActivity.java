@@ -42,5 +42,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void setupToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

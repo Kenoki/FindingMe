@@ -63,7 +63,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         };
 
-        txvUsername.setText(Config.user.getUsername());
+        txvUsername.setText(Config.profile.getFullName());
         txvEmail.setText(Config.user.getEmail());
 
         //Setting the actionbarToggle to drawer layout

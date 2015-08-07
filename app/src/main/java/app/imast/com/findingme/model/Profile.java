@@ -78,4 +78,9 @@ public class Profile {
     public void setDistrict_id(int district_id) {
         this.district_id = district_id;
     }
+
+    public String getFullName() {
+        return this.getName() + " " + getLastname();
+    }
+
 }
