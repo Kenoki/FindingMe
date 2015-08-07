@@ -30,6 +30,7 @@ import java.util.Map;
 
 import app.imast.com.findingme.Config;
 import app.imast.com.findingme.R;
+import app.imast.com.findingme.model.Profile;
 import app.imast.com.findingme.model.User;
 import app.imast.com.findingme.util.ValidationUtils;
 import app.imast.com.findingme.util.VolleySingleton;
@@ -152,9 +153,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                 Config.user = user;
                                 progress.dismiss();
-                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                                startActivity(intent);
-                                finish();
+
+                                getProfile();
                             }
 
                         }
@@ -181,6 +181,71 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsObjRequest);
         }
+    }
+
+    private void getProfile() {
+
+        final ProgressDialog progress = new ProgressDialog(this);
+        progress.setTitle("Finding Me");
+        progress.setMessage("Obteniendo Perfil...");
+        progress.show();
+
+        try {
+
+            JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                    (Request.Method.GET, "http://findmewebapp-eberttoribioupc.c9.io/users/" + Config.user.getId() + "/profiles", null, new Response.Listener<JSONObject>() {
+
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            LOGD(TAG, "Response: " + response.toString());
+
+                            try {
+
+                                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
+
+                                Profile profile = gson.fromJson(response.toString(), Profile.class);
+
+                                if (profile != null)
+                                {
+                                    Config.profile = profile;
+                                    progress.dismiss();
+                                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+
+                            } catch (Exception ex) {
+                                progress.dismiss();
+                                ex.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            progress.dismiss();
+                            Toast.makeText(getApplicationContext(), "Error de Conexión con el Servidor", Toast.LENGTH_SHORT).show();
+                            LOGD(TAG, "Error Volley:" + error.getMessage());
+                        }
+                    }){
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> params = new HashMap<String, String>();
+                    params.put("Content-Type", "application/json");
+                    params.put("Accept", "application/json");
+
+                    return params;
+                }
+            };
+
+
+
+            VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsObjRequest);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
     }
 
     private void goToSignUp() {

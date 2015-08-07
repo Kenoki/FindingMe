@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -34,6 +35,7 @@ import app.imast.com.findingme.Config;
 import app.imast.com.findingme.R;
 import app.imast.com.findingme.model.District;
 import app.imast.com.findingme.model.Profile;
+import app.imast.com.findingme.util.MyUtils;
 import app.imast.com.findingme.util.ValidationUtils;
 import app.imast.com.findingme.util.VolleySingleton;
 
@@ -48,7 +50,8 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = makeLogTag(MyInfoFragment.class);
 
     private NetworkImageView imgOwnerPhoto;
-    private TextInputLayout tilEmail, tilFullname, tilSurname, tilAddress;
+    TextView txvEmail;
+    private TextInputLayout tilFullname, tilSurname, tilAddress;
     private RadioGroup rbgSex;
     private Spinner spnDistrict;
     private FloatingActionButton fabSaveMyInfo;
@@ -67,8 +70,10 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener {
         fabSaveMyInfo.setOnClickListener(this);
 
         ArrayAdapter<District> districtAdapter = new ArrayAdapter<District>(getActivity(), android.R.layout.simple_spinner_item, Config.lstDistrict);
-        districtAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //districtAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnDistrict.setAdapter(districtAdapter);
+
+        setProfile();
 
     }
 
@@ -79,7 +84,7 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_my_info, container, false);
         spnDistrict = (Spinner) view.findViewById(R.id.spnDistrict);
         imgOwnerPhoto = (NetworkImageView) view.findViewById(R.id.ownerPhoto);
-        tilEmail = (TextInputLayout) view.findViewById(R.id.tilEmail);
+        txvEmail = (TextView) view.findViewById(R.id.txvEmail);
         tilFullname = (TextInputLayout) view.findViewById(R.id.tilFullname);
         tilSurname = (TextInputLayout) view.findViewById(R.id.tilSurname);
         tilAddress = (TextInputLayout) view.findViewById(R.id.tilAddress);
@@ -98,9 +103,26 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    private void setProfile() {
+
+        if (Config.profile != null) {
+
+            txvEmail.setText(Config.user.getEmail());
+            tilFullname.getEditText().setText(Config.profile.getName());
+            tilSurname.getEditText().setText(Config.profile.getLastname());
+            tilAddress.getEditText().setText(Config.profile.getAddress());
+
+            MyUtils.SelectSpinnerItemByValue(spnDistrict, Config.profile.getId());
+
+            int sexId = Config.profile.getSex().equals("M") ? R.id.rbtnSexoM : R.id.rbtnSexoF;
+            rbgSex.check(sexId);
+        }
+
+    }
+
     private void updateProfile() {
 
-        if (!ValidationUtils.isEmpty(tilEmail, tilFullname, tilSurname, tilAddress)) {
+        if (!ValidationUtils.isEmpty(tilFullname, tilSurname, tilAddress)) {
 
             final ProgressDialog progress = new ProgressDialog(getActivity());
             progress.setTitle("Finding Me");

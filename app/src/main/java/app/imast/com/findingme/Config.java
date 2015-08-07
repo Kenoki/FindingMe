@@ -7,6 +7,7 @@ import app.imast.com.findingme.model.District;
 import app.imast.com.findingme.model.LostPet;
 import app.imast.com.findingme.model.Pet;
 import app.imast.com.findingme.model.PetType;
+import app.imast.com.findingme.model.Profile;
 import app.imast.com.findingme.model.Race;
 import app.imast.com.findingme.model.User;
 
@@ -29,5 +30,6 @@ public class Config {
     public static User user;
     public static LostPet lostPet;
     public static Pet pet;
+    public static Profile profile;
 
 }
