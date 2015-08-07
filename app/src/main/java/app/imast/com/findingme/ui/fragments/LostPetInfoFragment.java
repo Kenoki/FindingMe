@@ -136,7 +136,7 @@ public class LostPetInfoFragment extends Fragment implements View.OnClickListene
         String parameters = String.format("%d?user_id=%d", Config.lostPet.getId(), Config.user.getId());
 
         JsonObjectRequest jsArrayRequest = new JsonObjectRequest
-                (Request.Method.GET, "http://findmewebapp-eberttoribioupc.c9.io/lost_pets/" + parameters, null, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, "http://findmewebapp-eberttoribioupc.c9.io/add_lostpet/" + parameters, null, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {

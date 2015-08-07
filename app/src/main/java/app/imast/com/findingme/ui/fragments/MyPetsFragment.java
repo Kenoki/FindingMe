@@ -149,6 +149,8 @@ public class MyPetsFragment extends Fragment implements View.OnClickListener {
                             myPetAdapter.setItems(lstMyPet);
                             myPetAdapter.notifyDataSetChanged();
                             progress.dismiss();
+                        } else {
+                            progress.dismiss();
                         }
 
                     }

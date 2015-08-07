@@ -18,6 +18,7 @@ import app.imast.com.findingme.Config;
 import app.imast.com.findingme.R;
 import app.imast.com.findingme.ui.fragments.HomeFragment;
 import app.imast.com.findingme.ui.fragments.MyPetsFragment;
+import app.imast.com.findingme.ui.fragments.MySearchFragment;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -30,6 +31,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        /*Parse.initialize(this, "VxoGtmV3iqI6AlrSE1Q1FRgCSG1eHXEEDtNcLWq9", "yxhBk5gegYeagwQxRRPK6gSMb3VNVtt758LRu0nD");
+        ParseInstallation.getCurrentInstallation().saveInBackground();*/
 
         setupToolbar();
 
@@ -121,7 +125,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 selectItem(new MyPetsFragment());
                 return true;
             case R.id.nav_my_search:
-                selectItem(new HomeFragment());
+                selectItem(new MySearchFragment());
                 return true;
             case R.id.nav_sign_out:
                 signOut();
