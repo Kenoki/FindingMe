@@ -18,6 +18,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.NetworkImageView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -44,6 +45,7 @@ public class LostPetInfoFragment extends Fragment implements View.OnClickListene
     private TextView txvPetName, txvPetSex, txvPetType, txvPetRace, txvPetAge, txvPetVaccinated, txvPetLostInfo, txvPetInfo;
     private ImageButton btnLastLocation;
     private FloatingActionButton fabAddSearch;
+    private NetworkImageView imgPetPhoto;
 
     public LostPetInfoFragment() {
         // Required empty public constructor
@@ -63,6 +65,14 @@ public class LostPetInfoFragment extends Fragment implements View.OnClickListene
 
         fabAddSearch.setOnClickListener(this);
         btnLastLocation.setOnClickListener(this);
+
+        String base_url_photo = "http://findmewebapp-eberttoribioupc.c9.io/system/pets/photos/000/000/";
+        String folder = String.format("%03d/thumb", Config.lostPet.getPet_id()) + "/";
+
+        String final_url_photo = base_url_photo + folder + Config.lostPet.getPet().getPhoto_file_name();
+
+        imgPetPhoto.setImageUrl(final_url_photo, VolleySingleton.getInstance(getActivity().getApplicationContext()).getImageLoader());
+        imgPetPhoto.setDefaultImageResId(R.drawable.ic_my_pets);
 
         String petType = "";
         String petRace = "";
@@ -109,6 +119,7 @@ public class LostPetInfoFragment extends Fragment implements View.OnClickListene
         txvPetInfo = (TextView) view.findViewById(R.id.txvPetInfo);
         btnLastLocation = (ImageButton) view.findViewById(R.id.btnlastLocation);
         fabAddSearch = (FloatingActionButton) view.findViewById(R.id.fabAddSearch);
+        imgPetPhoto = (NetworkImageView) view.findViewById(R.id.petPhoto);
         return view;
     }
 

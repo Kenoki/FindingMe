@@ -19,6 +19,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.NetworkImageView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -53,6 +54,7 @@ public class ReportPetFragment extends Fragment implements View.OnClickListener 
     private TextView txvPetName, txvPetSex, txvPetType, txvPetRace, txvPetAge, txvPetVaccinated, txvPetInfo;
     private TextInputLayout tilLostPetInfo;
     private FloatingActionButton fabReportar;
+    private NetworkImageView imgPetPhoto;
 
     public ReportPetFragment() {
         // Required empty public constructor
@@ -64,6 +66,11 @@ public class ReportPetFragment extends Fragment implements View.OnClickListener 
 
         Toolbar toolBar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolBar.setTitle("Reportar - " + Config.pet.getName());
+
+        String base_url_photo = "http://findmewebapp-eberttoribioupc.c9.io/system/pets/photos/000/000/";
+        String folder = String.format("%03d/thumb", Config.pet.getId()) + "/";
+
+        String final_url_photo = base_url_photo + folder + Config.pet.getPhoto_file_name();
 
         String petType = "";
         String petRace = "";
@@ -82,6 +89,8 @@ public class ReportPetFragment extends Fragment implements View.OnClickListener 
             }
         }
 
+        imgPetPhoto.setImageUrl(final_url_photo, VolleySingleton.getInstance(getActivity().getApplicationContext()).getImageLoader());
+        imgPetPhoto.setDefaultImageResId(R.drawable.ic_my_pets);
         txvPetName.setText(Config.pet.getName());
         txvPetSex.setText(Config.pet.getSex());
         txvPetAge.setText(String.valueOf(Config.pet.getAge()));
@@ -110,7 +119,7 @@ public class ReportPetFragment extends Fragment implements View.OnClickListener 
         txvPetInfo = (TextView) view.findViewById(R.id.txvPetInfo);
         tilLostPetInfo = (TextInputLayout) view.findViewById(R.id.tilLostPetInfo);
         fabReportar = (FloatingActionButton) view.findViewById(R.id.fabReportPet);
-
+        imgPetPhoto = (NetworkImageView) view.findViewById(R.id.petPhoto);
         return view;
     }
 

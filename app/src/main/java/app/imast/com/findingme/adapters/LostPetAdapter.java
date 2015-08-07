@@ -115,7 +115,7 @@ public class LostPetAdapter extends RecyclerView.Adapter<LostPetAdapter.LostPetV
     public void onBindViewHolder(LostPetAdapter.LostPetViewHolder lostPetViewHolder, int i) {
 
         String base_url_photo = "http://findmewebapp-eberttoribioupc.c9.io/system/pets/photos/000/000/";
-        String folder = String.format("%03d", items.get(i).getPet_id()) + "/";
+        String folder = String.format("%03d/thumb", items.get(i).getPet_id()) + "/";
 
         String final_url_photo = base_url_photo + folder + items.get(i).getPet().getPhoto_file_name();
 

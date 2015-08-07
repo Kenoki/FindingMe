@@ -18,11 +18,12 @@
         android:layout_gravity="right"
         app:fabSize="normal" />
 
-    <ImageView
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/petPhoto"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:src="@drawable/ic_my_pets"
-        android:layout_gravity="center_horizontal" />
+        android:scaleType="centerCrop"
+        android:layout_gravity="center_horizontal"/>
 
     <ScrollView
         android:layout_width="match_parent"

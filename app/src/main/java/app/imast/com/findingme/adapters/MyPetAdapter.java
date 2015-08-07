@@ -119,9 +119,10 @@ public class MyPetAdapter extends RecyclerView.Adapter<MyPetAdapter.MyPetViewHol
     @Override
     public void onBindViewHolder(MyPetAdapter.MyPetViewHolder myPetViewHolder, int i) {
 
-        String base_url_photo = "http://findmewebapp-eberttoribioupc.c9.io";
+        String base_url_photo = "http://findmewebapp-eberttoribioupc.c9.io/system/pets/photos/000/000/";
+        String folder = String.format("%03d/thumb", items.get(i).getId()) + "/";
 
-        String final_url_photo = base_url_photo + items.get(i).getPhoto();
+        String final_url_photo = base_url_photo + folder + items.get(i).getPhoto_file_name();
 
         LOGD(TAG, final_url_photo);
 

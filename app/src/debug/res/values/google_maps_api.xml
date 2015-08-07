@@ -4,7 +4,7 @@
 
     To get one, follow this link, follow the directions and press "Create" at the end:
 
-https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=EC:41:24:4C:C4:BE:FB:16:8F:40:C1:8E:E5:8D:1A:EC:6B:4D:58:D6%3Bapp.imast.com.findingme.ui
+https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=EC:41:24:4C:C4:BE:FB:16:8F:40:C1:8E:E5:8D:1A:EC:6B:4D:58:D6%3Bapp.imast.com.findingme
 
     You can also add your credentials to an existing key, using this line:
     EC:41:24:4C:C4:BE:FB:16:8F:40:C1:8E:E5:8D:1A:EC:6B:4D:58:D6;app.imast.com.findingme.ui
@@ -13,6 +13,6 @@ https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend
     string in this file.
     -->
     <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">
-        AIzaSyAh4chb5XQuAP30ZYLNjigDthxxHX4MXo8
+        AIzaSyB4kSEg-9XxOCS-AJA_wy2xMqUUaaj7zdg
     </string>
 </resources>

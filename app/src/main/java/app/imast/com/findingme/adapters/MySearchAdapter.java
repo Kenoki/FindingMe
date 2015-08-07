@@ -112,7 +112,7 @@ public class MySearchAdapter extends RecyclerView.Adapter<MySearchAdapter.MySear
     public void onBindViewHolder(MySearchAdapter.MySearchViewHolder mySearchViewHolder, int i) {
 
         String base_url_photo = "http://findmewebapp-eberttoribioupc.c9.io/system/pets/photos/000/000/";
-        String folder = String.format("%03d", items.get(i).getLost_pet().getPet().getId()) + "/";
+        String folder = String.format("%03d/thumb", items.get(i).getLost_pet().getPet().getId()) + "/";
 
         String final_url_photo = base_url_photo + folder + items.get(i).getLost_pet().getPet().getPhoto_file_name();
 

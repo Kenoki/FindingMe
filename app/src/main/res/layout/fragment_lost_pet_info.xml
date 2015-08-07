@@ -18,11 +18,12 @@
         android:layout_gravity="right"
         app:fabSize="normal" />
 
-    <ImageView
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/petPhoto"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:src="@drawable/ic_my_pets"
-        android:layout_gravity="center_horizontal" />
+        android:scaleType="centerCrop"
+        android:layout_gravity="center_horizontal"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -102,7 +103,10 @@
                     android:padding="5dp"
                     android:textStyle="bold"
                     android:text="Información de perdida"/>
+            </TableRow>
+            <TableRow>
                 <TextView
+                    android:layout_span="2"
                     android:padding="5dp"
                     android:id="@+id/txvPetLostInfo"/>
             </TableRow>
@@ -114,7 +118,9 @@
                 <ImageButton
                     android:padding="5dp"
                     android:src="@drawable/ic_action_gps"
-                    android:id="@+id/btnlastLocation" />
+                    android:id="@+id/btnlastLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </TableRow>
         </TableLayout>
 
