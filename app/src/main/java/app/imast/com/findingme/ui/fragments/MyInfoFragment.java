@@ -142,6 +142,9 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener {
 
             MyUtils.SelectSpinnerItemByValue(spnDistrict, Config.profile.getId());
 
+            if(Config.profile.getSex() == null)
+                Config.profile.setSex("M");
+
             int sexId = Config.profile.getSex().equals("M") ? R.id.rbtnSexoM : R.id.rbtnSexoF;
             rbgSex.check(sexId);
         }
@@ -197,6 +200,7 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener {
 
                                     if (profile != null)
                                     {
+                                        Config.profile = profile;
                                         progress.dismiss();
                                         Toast.makeText(getActivity().getApplicationContext(), "Se Actualizó Mi Información", Toast.LENGTH_SHORT).show();
                                     }

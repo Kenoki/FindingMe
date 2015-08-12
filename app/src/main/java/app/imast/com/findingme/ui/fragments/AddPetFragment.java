@@ -136,12 +136,20 @@ public class AddPetFragment extends Fragment implements View.OnClickListener {
 
     private void savePet() {
 
-        if (!ValidationUtils.isEmpty(tilPetName, tilPetAge)) {
+        if (!ValidationUtils.isEmpty(tilPetName, tilPetAge, tilPetInformation)) {
 
             final ProgressDialog progress = new ProgressDialog(getActivity());
             progress.setTitle("Finding Me");
             progress.setMessage("Grabando Mascota...");
             progress.show();
+
+            /*BitmapDrawable drawable = (BitmapDrawable) imgPetPhoto.getDrawable();
+            Bitmap bitmap = drawable.getBitmap();
+
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 75, bos);
+            byte[] bb = bos.toByteArray();
+            String petPhoto64 = Base64.encodeToString(bb, 0);*/
 
             int sexSelectedId = rbgPetSex.getCheckedRadioButtonId();
             int vaccionatedSelectedId = rbgPetVaccionated.getCheckedRadioButtonId();
@@ -170,7 +178,10 @@ public class AddPetFragment extends Fragment implements View.OnClickListener {
                 jsonObject.put("state", "1");
                 jsonObject.put("pet_type_id", petTypeId);
                 jsonObject.put("user_id", Config.user.getId());
+                //jsonObject.put("picture", petPhoto64);
                 //jsonObject.put("photo", "missing.png");
+
+                //LOGD(TAG, petPhoto64);
 
                 jsonPet.put("pet", jsonObject);
             } catch (JSONException e) {

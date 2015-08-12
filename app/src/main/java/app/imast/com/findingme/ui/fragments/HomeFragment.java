@@ -196,6 +196,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             lostPetAdapter.notifyDataSetChanged();
                             progress.dismiss();
                         } else {
+                            lostPetAdapter.clearData();
+                            lostPetAdapter.setItems(lstLostPet);
+                            lostPetAdapter.notifyDataSetChanged();
                             progress.dismiss();
                         }
 
